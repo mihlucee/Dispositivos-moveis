@@ -1,20 +1,14 @@
-// screens/DetailsScreen.js
-import React, { useState } from 'react'; // Removido useEffect, useRef
-import { View, StyleSheet, ScrollView } from 'react-native'; // Removido ActivityIndicator, Linking
+import React, { useState } from 'react'; 
+import { View, StyleSheet, ScrollView } from 'react-native'; 
 import { Appbar, Card, Text, Chip, Button, Snackbar, useTheme } from 'react-native-paper';
 import { saveMovieOrSerie, getMoviesAndSeries } from '../data/AsyncStorageService';
-// Removido import { getMovieVideos } from '../api/TmdbService';
-// Removido import { Video } from 'expo-av';
 
 const DetailsScreen = ({ route, navigation }) => {
   const { item } = route.params;
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  // Removido trailerKey, loadingTrailer, errorTrailer states
-  // Removido video useRef
   const theme = useTheme();
 
-  // Removido useEffect para buscar trailer
 
   const handleAddToMyList = async () => {
     try {
@@ -48,7 +42,7 @@ const DetailsScreen = ({ route, navigation }) => {
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Card style={[styles.card, { backgroundColor: theme.colors.cardBackground }]}>
-          {/* Sempre exibe o pôster ou placeholder */}
+
           {item.poster_path ? (
             <Card.Cover
               source={{ uri: item.poster_path }}
@@ -119,22 +113,21 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 16,
-    paddingBottom: 100, // Mantém o padding inferior para rolagem
+    paddingBottom: 100, 
   },
   card: {
     borderRadius: 12,
     elevation: 6,
     overflow: 'hidden',
   },
-  cardCover: { // Estilo para o Card.Cover
+  cardCover: { 
     height: 280,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     width: '100%',
   },
-  // Removido videoPlayer, mediaContainer (não mais necessários sem o player)
-  noImageContainer: { // Estilo para o placeholder de imagem (quando não há pôster)
-    height: 280, // Mantém a mesma altura do pôster
+  noImageContainer: { 
+    height: 280, 
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     width: '100%',
@@ -147,7 +140,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 20,
   },
-  // Removido trailerErrorContainer, trailerErrorText
   cardContent: {
     padding: 20,
   },
@@ -190,7 +182,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     marginTop: 10,
   },
-  // Removido playTrailerButton (não mais necessário)
   buttonLabel: {
     fontSize: 16,
     fontWeight: 'bold',

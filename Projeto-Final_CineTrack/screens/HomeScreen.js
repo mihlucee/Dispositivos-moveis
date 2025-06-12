@@ -1,4 +1,3 @@
-// screens/HomeScreen.js
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, FlatList, StyleSheet, Dimensions, ScrollView, ActivityIndicator, ImageBackground } from 'react-native';
 import { Appbar, Card, Text, Button, IconButton, Dialog, Portal, useTheme } from 'react-native-paper';
@@ -7,12 +6,11 @@ import { getMoviesAndSeries, deleteMovieOrSerie } from '../data/AsyncStorageServ
 import { getPopularMovies } from '../api/TmdbService';
 import { Ionicons } from '@expo/vector-icons';
 
-// Calcula a largura da tela para carrosséis
-const { width } = Dimensions.get('window');
-const HORIZONTAL_ITEM_WIDTH = width * 0.4; // Para carrosséis de itens menores
-const MAIN_CAROUSEL_HEIGHT = width * 0.6; // Altura do carrossel principal (proporcional à largura)
 
-// Componente para um card de filme/série em lista horizontal (reutilizável)
+const { width } = Dimensions.get('window');
+const HORIZONTAL_ITEM_WIDTH = width * 0.4; 
+const MAIN_CAROUSEL_HEIGHT = width * 0.6; 
+
 const MovieCardHorizontal = ({ item, theme, navigation, detailsScreenName = 'Detalhes' }) => (
   <Card style={[homeStyles.horizontalCard, { backgroundColor: theme.colors.cardBackground }]} onPress={() => navigation.navigate(detailsScreenName, { item })}>
     {item.poster_path ? (
@@ -33,12 +31,11 @@ const MovieCardHorizontal = ({ item, theme, navigation, detailsScreenName = 'Det
   </Card>
 );
 
-// Componente para o item do Carrossel Principal
 const MainCarouselItem = ({ item, theme, navigation }) => (
   <ImageBackground
     source={{ uri: item.poster_path }}
     style={[homeStyles.mainCarouselBackground, { width: width }]}
-    resizeMode="cover" // Alterado para 'cover' para preencher o espaço
+    resizeMode="cover" 
   >
     <View style={homeStyles.mainCarouselOverlay}>
       <Text variant="headlineMedium" numberOfLines={2} style={[homeStyles.mainCarouselTitle, { color: theme.colors.buttonText }]}>
@@ -137,8 +134,6 @@ const HomeScreen = ({ navigation }) => {
       </Appbar.Header>
 
       <ScrollView contentContainerStyle={homeStyles.scrollViewContent}>
-
-        {/* Carrossel Principal de Filmes Populares */}
         {loadingPopular ? (
           <View style={[homeStyles.mainCarouselContainer, homeStyles.horizontalListLoading]}>
             <ActivityIndicator size="large" color={theme.colors.primary} />
@@ -166,7 +161,7 @@ const HomeScreen = ({ navigation }) => {
               viewabilityConfig={viewConfigRef.current}
               contentContainerStyle={homeStyles.mainCarouselContent}
             />
-            {/* Paginação do carrossel */}
+            
             <View style={homeStyles.paginationDotsContainer}>
               {mainCarouselMovies.map((_, index) => (
                 <View
@@ -181,7 +176,6 @@ const HomeScreen = ({ navigation }) => {
           </View>
         )}
 
-        {/* Seção: Sua Coleção (Horizontal) */}
         <View style={homeStyles.section}>
           <View style={homeStyles.sectionHeader}>
             <Text variant="titleLarge" style={[homeStyles.sectionTitle, { color: theme.colors.text }]}>
@@ -213,8 +207,6 @@ const HomeScreen = ({ navigation }) => {
             />
           )}
         </View>
-
-        {/* Seção: Mais Filmes Populares (Horizontal) - Se houver mais além do carrossel principal */}
         {popularMovies.length > 0 && (
           <View style={homeStyles.section}>
             <View style={homeStyles.sectionHeader}>
@@ -269,19 +261,17 @@ const homeStyles = StyleSheet.create({
   scrollViewContent: {
     paddingBottom: 20,
   },
-  // Estilos para o Carrossel Principal
   mainCarouselWrapper: {
     height: MAIN_CAROUSEL_HEIGHT,
     marginBottom: 20,
     elevation: 5,
   },
   mainCarouselContent: {
-    // A largura já é controlada pelo 'width: width' no MainCarouselItem
+
   },
   mainCarouselBackground: {
     height: MAIN_CAROUSEL_HEIGHT,
     justifyContent: 'flex-end',
-    // Removido backgroundColor explícito para que a imagem preencha tudo
   },
   mainCarouselOverlay: {
     backgroundColor: 'rgba(0,0,0,0.4)',
@@ -314,7 +304,6 @@ const homeStyles = StyleSheet.create({
     marginHorizontal: 4,
   },
 
-  // Estilos de Seção (Minha Lista, Mais Populares)
   section: {
     marginTop: 15,
     marginBottom: 10,

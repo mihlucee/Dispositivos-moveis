@@ -1,4 +1,3 @@
-// screens/RegisterScreen.js
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Appbar, TextInput, Button, HelperText, Text, Snackbar, useTheme } from 'react-native-paper';
@@ -63,7 +62,7 @@ const RegisterScreen = ({ route, navigation }) => {
         director,
         rating,
         description,
-        poster_path: item?.poster_path || null, // Mantém o poster_path se estiver editando, ou nulo
+        poster_path: item?.poster_path || null, 
       };
 
       let success;

@@ -1,18 +1,17 @@
-// api/TmdbService.js
-const API_KEY = 'd646107a1061c84bfbbf29e65e3f44c3'; // <<< SUBSTITUA PELA SUA CHAVE DO TMDB AQUI!
+const API_KEY = 'd646107a1061c84bfbbf29e65e3f44c3'; 
 const BASE_URL = 'https://api.themoviedb.org/3';
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'; // Base URL para imagens de pôster
+const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'; 
 
 /**
  * Função auxiliar para fazer requisições à API do TMDB.
- * @param {string} endpoint O endpoint da API (ex: '/movie/popular').
- * @param {object} params Parâmetros de query adicionais.
- * @returns {Promise<object>} Os dados da resposta da API.
+ * @param {string} endpoint 
+ * @param {object} params 
+ * @returns {Promise<object>} 
  */
 const fetchTmdb = async (endpoint, params = {}) => {
   const query = new URLSearchParams({
     api_key: API_KEY,
-    language: 'pt-BR', // Define o idioma para português do Brasil
+    language: 'pt-BR', 
     ...params,
   }).toString();
 
@@ -28,11 +27,11 @@ const fetchTmdb = async (endpoint, params = {}) => {
     return data;
   } catch (error) {
     console.error('Erro ao buscar dados do TMDB:', error);
-    throw error; // Re-lança o erro para ser tratado na tela
+    throw error; 
   }
 };
 
-// Função auxiliar para gerar URL de placeholder
+
 const getPlaceholderImage = (title) => {
   const encodedTitle = encodeURIComponent(title || 'Sem título');
   return `https://placehold.co/600x400/CCCCCC/000000?text=${encodedTitle.replace(/\s/g, '+')}`;
@@ -53,9 +52,7 @@ export const getPopularMovies = async () => {
       director: 'N/A',
       rating: movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A',
       description: movie.overview || 'Sem descrição.',
-      // Garante que poster_path sempre tenha uma URL, mesmo que seja de placeholder
       poster_path: movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : getPlaceholderImage(movie.title),
-      // Adiciona uma flag para identificar que veio do TMDB
       isTmdbItem: true,
       media_type: 'movie',
     }));
@@ -99,19 +96,19 @@ export const getUpcomingMovies = async () => {
 export const searchMoviesAndSeries = async (query) => {
   if (!query) return [];
   try {
-    const data = await fetchTmdb('/search/multi', { query }); // search/multi pesquisa filmes e séries
+    const data = await fetchTmdb('/search/multi', { query }); 
     return data.results
-      .filter(item => item.media_type === 'movie' || item.media_type === 'tv') // Filtra apenas filmes e séries
+      .filter(item => item.media_type === 'movie' || item.media_type === 'tv') 
       .map(item => ({
         id: item.id.toString(),
         title: item.media_type === 'movie' ? item.title : item.name,
         year: item.release_date || item.first_air_date ? (item.release_date || item.first_air_date).substring(0, 4) : 'N/A',
-        genre: item.media_type === 'movie' ? 'Filme' : 'Série', // Simplificado
+        genre: item.media_type === 'movie' ? 'Filme' : 'Série', 
         director: 'N/A',
         rating: item.vote_average ? item.vote_average.toFixed(1) : 'N/A',
         description: item.overview || 'Sem descrição.',
         poster_path: item.poster_path ? `${IMAGE_BASE_URL}${item.poster_path}` : getPlaceholderImage(item.title || item.name),
-        isTmdbItem: true, // Adiciona uma flag para identificar que veio do TMDB
+        isTmdbItem: true, 
         media_type: item.media_type,
       }));
   } catch (error) {
@@ -120,29 +117,3 @@ export const searchMoviesAndSeries = async (query) => {
   }
 };
 
-/**
- * Busca vídeos (incluindo trailers) de um filme ou série no TMDB.
- * @param {string} id O ID do filme/série.
- * @param {string} mediaType 'movie' ou 'tv'.
- * @returns {Promise<string|null>} A chave do YouTube para o trailer, ou null se não for encontrado.
- */
-export const getMovieVideos = async (id, mediaType = 'movie') => {
-  try {
-    const data = await fetchTmdb(`/${mediaType}/${id}/videos`);
-    // Procura por um trailer do YouTube em português (Brasil)
-    const trailer = data.results.find(
-      (video) => video.site === 'YouTube' && video.type === 'Trailer' && video.iso_639_1 === 'pt'
-    );
-    // Se não encontrar em pt, tenta em inglês
-    if (!trailer) {
-      const fallbackTrailer = data.results.find(
-        (video) => video.site === 'YouTube' && video.type === 'Trailer' && video.iso_639_1 === 'en'
-      );
-      return fallbackTrailer ? fallbackTrailer.key : null;
-    }
-    return trailer.key;
-  } catch (error) {
-    console.error(`Erro ao buscar vídeos para ${mediaType} com ID ${id}:`, error);
-    return null;
-  }
-};

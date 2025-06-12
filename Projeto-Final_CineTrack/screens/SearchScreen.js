@@ -1,13 +1,11 @@
-// screens/SearchScreen.js
 import React, { useState } from 'react';
 import { View, FlatList, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import { Appbar, TextInput, Button, Card, Text, useTheme } from 'react-native-paper';
 import { searchMoviesAndSeries } from '../api/TmdbService';
 
-// Calcula a largura de cada item para ter 2 colunas com algum espaçamento
 const { width } = Dimensions.get('window');
-const NUM_COLUMNS = 2; // Definindo o número de colunas como uma constante
-const ITEM_WIDTH = (width / NUM_COLUMNS) - 24; // (Largura da tela / 2 colunas) - (margem total por item)
+const NUM_COLUMNS = 2; 
+const ITEM_WIDTH = (width / NUM_COLUMNS) - 24; 
 
 const SearchScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');

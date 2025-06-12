@@ -1,14 +1,12 @@
-// screens/UpcomingMoviesScreen.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, FlatList, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import { Appbar, Card, Text, Button, useTheme } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import { getUpcomingMovies } from '../api/TmdbService';
 
-// Calcula a largura de cada item para ter 2 colunas com algum espaçamento
 const { width } = Dimensions.get('window');
-const NUM_COLUMNS = 2; // Definindo o número de colunas como uma constante
-const ITEM_WIDTH = (width / NUM_COLUMNS) - 24; // (Largura da tela / 2 colunas) - (margem total por item)
+const NUM_COLUMNS = 2; 
+const ITEM_WIDTH = (width / NUM_COLUMNS) - 24; 
 
 const UpcomingMoviesScreen = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
@@ -46,7 +44,7 @@ const UpcomingMoviesScreen = ({ navigation }) => {
         <Card.Cover
           source={{ uri: item.poster_path }}
           style={[styles.cardCover, { backgroundColor: theme.colors.placeholder }]}
-          resizeMode="cover" // Alterado para 'cover' para preencher o espaço
+          resizeMode="cover" 
         />
       ) : (
         <View style={[styles.noImageContainer, { backgroundColor: theme.colors.placeholder }]}>
@@ -98,10 +96,10 @@ const UpcomingMoviesScreen = ({ navigation }) => {
           data={movies}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
-          numColumns={NUM_COLUMNS} // Exibe 2 colunas
-          key={NUM_COLUMNS.toString()} // Adicionado key para forçar re-renderização ao mudar numColumns
+          numColumns={NUM_COLUMNS} 
+          key={NUM_COLUMNS.toString()} 
           contentContainerStyle={styles.listContent}
-          columnWrapperStyle={styles.row} // Estilo para cada linha
+          columnWrapperStyle={styles.row} 
         />
       )}
     </View>

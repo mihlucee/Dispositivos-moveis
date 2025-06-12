@@ -1,16 +1,13 @@
-// data/AsyncStorageService.js
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const STORAGE_KEY = '@CineTrack:moviesAndSeries'; // Chave para armazenar os dados no AsyncStorage
+const STORAGE_KEY = '@CineTrack:moviesAndSeries'; 
 
 /**
- * Carrega todos os filmes e séries do AsyncStorage.
  * @returns {Array} Uma lista de filmes e séries.
  */
 export const getMoviesAndSeries = async () => {
   try {
     const jsonValue = await AsyncStorage.getItem(STORAGE_KEY);
-    // Retorna os dados parseados ou um array vazio se não houver dados
     return jsonValue != null ? JSON.parse(jsonValue) : [];
   } catch (e) {
     console.error('Erro ao carregar filmes e séries:', e);
@@ -19,14 +16,13 @@ export const getMoviesAndSeries = async () => {
 };
 
 /**
- * Salva um novo filme ou série no AsyncStorage.
  * @param {Object} newItem O novo item a ser salvo.
  * @returns {boolean} True se o item foi salvo com sucesso, false caso contrário.
  */
 export const saveMovieOrSerie = async (newItem) => {
   try {
     const currentItems = await getMoviesAndSeries();
-    const updatedItems = [...currentItems, { ...newItem, id: Date.now().toString() }]; // Garante um ID único
+    const updatedItems = [...currentItems, { ...newItem, id: Date.now().toString() }]; 
     const jsonValue = JSON.stringify(updatedItems);
     await AsyncStorage.setItem(STORAGE_KEY, jsonValue);
     console.log('Item salvo com sucesso:', newItem.title);
@@ -38,7 +34,6 @@ export const saveMovieOrSerie = async (newItem) => {
 };
 
 /**
- * Atualiza um filme ou série existente no AsyncStorage.
  * @param {Object} updatedItem O item atualizado.
  * @returns {boolean} True se o item foi atualizado com sucesso, false caso contrário.
  */
@@ -48,7 +43,7 @@ export const updateMovieOrSerie = async (updatedItem) => {
     const itemIndex = currentItems.findIndex(item => item.id === updatedItem.id);
 
     if (itemIndex > -1) {
-      currentItems[itemIndex] = updatedItem; // Atualiza o item na lista
+      currentItems[itemIndex] = updatedItem; 
       const jsonValue = JSON.stringify(currentItems);
       await AsyncStorage.setItem(STORAGE_KEY, jsonValue);
       console.log('Item atualizado com sucesso:', updatedItem.title);
@@ -70,7 +65,7 @@ export const updateMovieOrSerie = async (updatedItem) => {
 export const deleteMovieOrSerie = async (id) => {
   try {
     const currentItems = await getMoviesAndSeries();
-    const filteredItems = currentItems.filter(item => item.id !== id); // Remove o item da lista
+    const filteredItems = currentItems.filter(item => item.id !== id); 
     const jsonValue = JSON.stringify(filteredItems);
     await AsyncStorage.setItem(STORAGE_KEY, jsonValue);
     console.log('Item deletado com sucesso:', id);
@@ -82,7 +77,7 @@ export const deleteMovieOrSerie = async (id) => {
 };
 
 /**
- * Deleta todos os filmes e séries do AsyncStorage (para testes).
+ * Deleta todos os filmes e séries do AsyncStorage.
  */
 export const clearAll = async () => {
   try {

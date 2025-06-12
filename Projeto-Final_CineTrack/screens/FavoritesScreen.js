@@ -1,14 +1,13 @@
-// screens/FavoritesScreen.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
 import { Appbar, Card, Text, Button, IconButton, Dialog, Portal, useTheme } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import { getMoviesAndSeries, deleteMovieOrSerie } from '../data/AsyncStorageService';
 
-// Calcula a largura de cada item para ter 2 colunas com algum espaçamento
+
 const { width } = Dimensions.get('window');
-const NUM_COLUMNS = 2; // Definindo o número de colunas como uma constante
-const ITEM_WIDTH = (width / NUM_COLUMNS) - 24; // (Largura da tela / 2 colunas) - (margem total por item)
+const NUM_COLUMNS = 2; 
+const ITEM_WIDTH = (width / NUM_COLUMNS) - 24; // 
 
 const FavoritesScreen = ({ navigation }) => {
   const [favoriteItems, setFavoriteItems] = useState([]);
@@ -16,13 +15,12 @@ const FavoritesScreen = ({ navigation }) => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const theme = useTheme();
 
-  // Função para carregar os itens favoritos (do AsyncStorage)
   const loadFavoriteItems = async () => {
     const data = await getMoviesAndSeries();
     setFavoriteItems(data);
   };
 
-  // Recarrega os favoritos sempre que a tela for focada
+
   useFocusEffect(
     useCallback(() => {
       loadFavoriteItems();
@@ -30,18 +28,17 @@ const FavoritesScreen = ({ navigation }) => {
     }, [])
   );
 
-  // Função para confirmar a exclusão
   const confirmDelete = (item) => {
     setItemToDelete(item);
     setShowDialog(true);
   };
 
-  // Função para deletar um filme/série dos favoritos (e do AsyncStorage)
+
   const handleDelete = async () => {
     if (itemToDelete) {
       const success = await deleteMovieOrSerie(itemToDelete.id);
       if (success) {
-        loadFavoriteItems(); // Recarrega a lista após a exclusão
+        loadFavoriteItems(); 
       } else {
         console.log('Erro ao deletar o item favorito.');
       }
@@ -73,7 +70,6 @@ const FavoritesScreen = ({ navigation }) => {
           icon="pencil"
           size={20}
           color={theme.colors.primary}
-          // CORREÇÃO AQUI: Navegando para 'EditarFavoritos' em vez de 'Cadastrar'
           onPress={() => navigation.navigate('EditarFavoritos', { item, isEditing: true })}
           style={styles.actionButton}
         />
@@ -111,7 +107,6 @@ const FavoritesScreen = ({ navigation }) => {
         />
       )}
 
-      {/* Diálogo de confirmação de exclusão */}
       <Portal>
         <Dialog visible={showDialog} onDismiss={() => setShowDialog(false)} style={{ borderRadius: theme.roundness }}>
           <Dialog.Title style={{ color: theme.colors.text }}>Confirmar Exclusão</Dialog.Title>

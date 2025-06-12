@@ -1,14 +1,13 @@
-// screens/PopularMoviesScreen.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, FlatList, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import { Appbar, Card, Text, Button, useTheme } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import { getPopularMovies } from '../api/TmdbService';
 
-// Calcula a largura de cada item para ter 2 colunas com algum espaçamento
+
 const { width } = Dimensions.get('window');
-const NUM_COLUMNS = 2; // Definindo o número de colunas como uma constante
-const ITEM_WIDTH = (width / NUM_COLUMNS) - 24; // (Largura da tela / 2 colunas) - (margem total por item)
+const NUM_COLUMNS = 2; 
+const ITEM_WIDTH = (width / NUM_COLUMNS) - 24; 
 
 const PopularMoviesScreen = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
